@@ -48,7 +48,7 @@ export function checkTemplatesCacheLimit(timeout = TEMPLATE_CACHE_GC_TIMEOUT) {
 
 export function matchesPodConvention (componentName, modulePath) {
   var basePath = 'components/' + componentName;
-  var componentRegexp = new RegExp(regexEscape(basePath + '/component.js') + '$');
+  var componentRegexp = new RegExp(regexEscape(basePath + '/component.') + '(js|coffee|ts)$');
   if (componentRegexp.test(modulePath)) {
     return true;
   }
@@ -62,7 +62,7 @@ export function matchesPodConvention (componentName, modulePath) {
 }
 
 export function matchesClassicConvention (componentName, modulePath) {
-  var componentRegexp = new RegExp(regexEscape('components/' + componentName + '.js') + '$');
+  var componentRegexp = new RegExp(regexEscape('components/' + componentName + '.') + '(js|coffee|ts)$');
   if (componentRegexp.test(modulePath)) {
     return true;
   }
@@ -80,7 +80,7 @@ export function matchingComponent (componentName, modulePath) {
       return false;
   }
   var standardModulePath = modulePath.split('\\').join('/');
-  var javascriptPath = standardModulePath.replace(/\.ts$/, '.js');
+  var javascriptPath = standardModulePath.replace(/\.(ts|coffee)$/, '.js');
   return matchesClassicConvention(componentName, javascriptPath) ||
     matchesPodConvention(componentName, javascriptPath);
 }
@@ -126,7 +126,7 @@ const HotReplacementComponent = Component.extend(HotComponentMixin, {
     `;
     const templateHash = hashString(templateLayout);
     if (!TemplatesCache[templateHash]) {
-        TemplatesCache[templateHash] = Ember.HTMLBars.compile(templateLayout); 
+        TemplatesCache[templateHash] = Ember.HTMLBars.compile(templateLayout);
     }
     checkTemplatesCacheLimit();
     return TemplatesCache[templateHash];
