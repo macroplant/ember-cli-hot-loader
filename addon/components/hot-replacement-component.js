@@ -80,7 +80,7 @@ export function matchingComponent (componentName, modulePath) {
       return false;
   }
   var standardModulePath = modulePath.split('\\').join('/');
-  var javascriptPath = standardModulePath.replace(/\.ts$/, '.js');
+  var javascriptPath = standardModulePath.replace(/\.(ts|coffee)$/, '.js');
   return matchesClassicConvention(componentName, javascriptPath) ||
     matchesPodConvention(componentName, javascriptPath);
 }
@@ -126,7 +126,7 @@ const HotReplacementComponent = Component.extend(HotComponentMixin, {
     `;
     const templateHash = hashString(templateLayout);
     if (!TemplatesCache[templateHash]) {
-        TemplatesCache[templateHash] = Ember.HTMLBars.compile(templateLayout); 
+        TemplatesCache[templateHash] = Ember.HTMLBars.compile(templateLayout);
     }
     checkTemplatesCacheLimit();
     return TemplatesCache[templateHash];
